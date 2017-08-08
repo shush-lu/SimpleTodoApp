@@ -38,5 +38,6 @@
     android:layout_toStartOf="@+id/btnAddItem"
     android:ems="10"
     android:inputType="textPersonName"
-    android:text="Name" />
+    android:hint="Add a new item"
+    android:textColor="#000000"/>
 </RelativeLayout>
