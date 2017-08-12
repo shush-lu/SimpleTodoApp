@@ -3,10 +3,11 @@ package com.shusheng.codepath.simpletodo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import org.apache.commons.io.FileUtils;
@@ -33,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
         android.R.layout.simple_list_item_1, items);
     lvItems.setAdapter(itemsAdapter);
     setupListViewListener();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
   }
 
   private void setupListViewListener() {
@@ -67,18 +75,14 @@ public class MainActivity extends AppCompatActivity {
     if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
       String newContent = data.getExtras().getString("newContent");
       int pos = data.getExtras().getInt("pos", 0);
-      items.set(pos, newContent);
+      if (pos == items.size()) {
+        items.add(newContent);
+      } else {
+        items.set(pos, newContent);
+      }
       itemsAdapter.notifyDataSetChanged();
       writeItems();
     }
-  }
-
-  public void onAddItem(View v) {
-    EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-    String itemText = etNewItem.getText().toString();
-    itemsAdapter.add(itemText);
-    etNewItem.setText("");
-    writeItems();
   }
 
   private void readItems() {
@@ -98,6 +102,21 @@ public class MainActivity extends AppCompatActivity {
       FileUtils.writeLines(todoFile, items);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle item selection
+    switch (item.getItemId()) {
+      case R.id.miAddTask:
+        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+        i.putExtra("content", "");
+        i.putExtra("pos", items.size());
+        startActivityForResult(i, REQUEST_CODE);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
   }
 }
