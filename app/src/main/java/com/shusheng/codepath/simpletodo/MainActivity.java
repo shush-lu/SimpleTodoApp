@@ -5,22 +5,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileUtils;
+import com.shusheng.codepath.simpletodo.adapter.TasksAdapter;
+import com.shusheng.codepath.simpletodo.data.Task;
 
-import java.io.File;
-import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-  ArrayList<String> items;
-  ArrayAdapter<String> itemsAdapter;
-  ListView lvItems;
+  ArrayList<Task> tasksList = new ArrayList<>();
+  TasksAdapter tasksAdapter;
+  ListView tasksListView;
 
   private final int REQUEST_CODE = 10;
 
@@ -28,11 +25,9 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    lvItems = (ListView) findViewById(R.id.lvItems);
-    readItems();
-    itemsAdapter = new ArrayAdapter<>(this,
-        android.R.layout.simple_list_item_1, items);
-    lvItems.setAdapter(itemsAdapter);
+    tasksAdapter = new TasksAdapter(this, tasksList);
+    tasksListView = (ListView) findViewById(R.id.tasks_list_view);
+    tasksListView.setAdapter(tasksAdapter);
     setupListViewListener();
   }
 
@@ -44,64 +39,54 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void setupListViewListener() {
-    lvItems.setOnItemLongClickListener(
-        new AdapterView.OnItemLongClickListener() {
-          @Override
-          public boolean onItemLongClick(AdapterView<?> adapter,
-                                         View item, int pos, long id) {
-            items.remove(pos);
-            itemsAdapter.notifyDataSetChanged();
-            writeItems();
-            return true;
-          }
-        });
+//    lvItems.setOnItemLongClickListener(
+//        new AdapterView.OnItemLongClickListener() {
+//          @Override
+//          public boolean onItemLongClick(AdapterView<?> adapter,
+//                                         View item, int pos, long id) {
+//            items.remove(pos);
+//            itemsAdapter.notifyDataSetChanged();
+//            writeItems();
+//            return true;
+//          }
+//        });
 
-    lvItems.setOnItemClickListener(
-        new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> adapter,
-                                  View item, int pos, long id) {
-            Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-            i.putExtra("content", items.get(pos));
-            i.putExtra("pos", pos);
-            startActivityForResult(i, REQUEST_CODE);
-          }
-        }
-    );
+//    lvItems.setOnItemClickListener(
+//        new AdapterView.OnItemClickListener() {
+//          @Override
+//          public void onItemClick(AdapterView<?> adapter,
+//                                  View item, int pos, long id) {
+//            Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+//            i.putExtra("content", items.get(pos));
+//            i.putExtra("pos", pos);
+//            startActivityForResult(i, REQUEST_CODE);
+//          }
+//        }
+//    );
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
       String newContent = data.getExtras().getString("newContent");
+      String date = data.getExtras().getString("date");
       int pos = data.getExtras().getInt("pos", 0);
-      if (pos == items.size()) {
-        items.add(newContent);
+      if (pos == tasksList.size()) {
+        Task task = new Task();
+        task.setTitle(newContent);
+        try {
+          task.setDateFromString(date);
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+        task.save();
+        tasksList.add(task);
       } else {
-        items.set(pos, newContent);
+        Task task = tasksList.get(pos);
+        task.setTitle(newContent);
+        task.save();
       }
-      itemsAdapter.notifyDataSetChanged();
-      writeItems();
-    }
-  }
-
-  private void readItems() {
-    File filesDir = getFilesDir();
-    File todoFile = new File(filesDir, "todo.txt");
-    try {
-      items = new ArrayList<String>(FileUtils.readLines(todoFile));
-    } catch (IOException e) {
-      items = new ArrayList<String>();
-    }
-  }
-
-  private void writeItems() {
-    File filesDir = getFilesDir();
-    File todoFile = new File(filesDir, "todo.txt");
-    try {
-      FileUtils.writeLines(todoFile, items);
-    } catch (IOException e) {
-      e.printStackTrace();
+      tasksAdapter.notifyDataSetChanged();
     }
   }
 
@@ -112,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
       case R.id.miAddTask:
         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
         i.putExtra("content", "");
-        i.putExtra("pos", items.size());
+        i.putExtra("pos", tasksList.size());
         startActivityForResult(i, REQUEST_CODE);
         return true;
       default:

@@ -9,10 +9,9 @@
   tools:context=".MainActivity">
 
   <ListView
-    android:id="@+id/lvItems"
+    android:id="@+id/tasks_list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@+id/btnAddItem"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true" />

@@ -36,10 +36,20 @@
     android:id="@+id/btnSave"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_below="@+id/etEditItem"
-    android:layout_marginTop="20dp"
     android:onClick="onSaveItem"
-    android:text="Save"/>
+    android:text="Save"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"/>
+
+  <DatePicker
+    android:layout_marginTop="10dp"
+    android:id="@+id/picker_due_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:datePickerMode="spinner"
+    android:calendarViewShown="false"
+    android:layout_below="@+id/etEditItem"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"/>
 </RelativeLayout>
