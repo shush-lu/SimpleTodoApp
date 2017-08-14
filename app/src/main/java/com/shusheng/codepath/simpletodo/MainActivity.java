@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialogFra
 
   private void showEditDialog(Task task, int pos) {
     FragmentManager fm = getSupportFragmentManager();
-    EditTaskDialogFragment editNameDialogFragment = EditTaskDialogFragment.newInstance(task, pos);
-    editNameDialogFragment.show(fm, "fragment_edit_task");
+    EditTaskDialogFragment editTaskDialogFragment = EditTaskDialogFragment.newInstance(task, pos);
+    editTaskDialogFragment.show(fm, "fragment_edit_task");
   }
 
   @Override

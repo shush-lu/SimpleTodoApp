@@ -15,7 +15,9 @@ import java.util.Date;
 @Parcel(analyze = {Task.class})
 public class Task extends BaseModel {
 
-  SimpleDateFormat sf = new SimpleDateFormat("MM dd yyyy");
+  SimpleDateFormat sfSet = new SimpleDateFormat("MM dd yyyy");
+  SimpleDateFormat sfGet = new SimpleDateFormat("MMM dd yyyy");
+//Todo find better way to display date
 
   // empty constructor needed by the Parceler library
   public Task() {
@@ -65,12 +67,12 @@ public class Task extends BaseModel {
   }
 
   public void setDateFromString(String date) throws ParseException {
-    sf.setLenient(true);
-    this.dueDate = sf.parse(date);
+    sfSet.setLenient(true);
+    this.dueDate = sfSet.parse(date);
   }
   // Todo: catch exception
 
   public String getDataInString() {
-    return sf.format(dueDate);
+    return sfGet.format(dueDate);
   }
 }
