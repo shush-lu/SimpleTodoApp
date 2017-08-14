@@ -5,56 +5,72 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.parceler.Parcel;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Table(database = SimpleTodoDatabase.class)
+@Parcel(analyze = {Task.class})
 public class Task extends BaseModel {
 
-    SimpleDateFormat sf = new SimpleDateFormat("MM dd yyyy");
+  SimpleDateFormat sf = new SimpleDateFormat("MM dd yyyy");
 
-    @Column
-    @PrimaryKey (autoincrement = true)
-    private int id;
+  // empty constructor needed by the Parceler library
+  public Task() {
+  }
 
-    public int getId() {
-        return id;
+  public Task(String title, String date){
+    setTitle(title);
+    try {
+      setDateFromString(date);
+    } catch (ParseException e) {
+      e.printStackTrace();
     }
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column
+  @PrimaryKey(autoincrement = true)
+  int id;
 
-    @Column
-    private String title;
+  public int getId() {
+    return id;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  @Column
+  String title;
 
-    @Column
-    private Date dueDate;
+  public String getTitle() {
+    return title;
+  }
 
-    public Date getDueDate() {
-        return dueDate;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
+  @Column
+  Date dueDate;
 
-    public void setDateFromString(String date) throws ParseException {
-        sf.setLenient(true);
-        this.dueDate = sf.parse(date);
-    }
-    // Todo: catch exception
+  public Date getDueDate() {
+    return dueDate;
+  }
 
-    public String getDataInString(){
-        return sf.format(dueDate);
-    }
+  public void setDueDate(Date dueDate) {
+    this.dueDate = dueDate;
+  }
+
+  public void setDateFromString(String date) throws ParseException {
+    sf.setLenient(true);
+    this.dueDate = sf.parse(date);
+  }
+  // Todo: catch exception
+
+  public String getDataInString() {
+    return sf.format(dueDate);
+  }
 }
