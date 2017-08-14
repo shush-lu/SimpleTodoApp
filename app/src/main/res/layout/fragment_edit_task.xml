@@ -1,9 +1,7 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".EditItemActivity"
   android:paddingBottom="16dp"
   android:paddingLeft="16dp"
   android:paddingRight="16dp"
@@ -11,7 +9,7 @@
 
 
   <TextView
-    android:id="@+id/tvTitle"
+    android:id="@+id/text_view_title"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
@@ -22,21 +20,20 @@
     android:textColor="#000000"/>
 
   <EditText
-    android:id="@+id/etEditItem"
+    android:id="@+id/edit_text_edit_task"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ems="10"
     android:inputType="textMultiLine"
-    android:layout_below="@+id/tvTitle"
+    android:layout_below="@+id/text_view_title"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:layout_marginTop="10dp"/>
 
   <Button
-    android:id="@+id/btnSave"
+    android:id="@+id/btn_save_task"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:onClick="onSaveItem"
     android:text="Save"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
@@ -44,12 +41,12 @@
 
   <DatePicker
     android:layout_marginTop="10dp"
-    android:id="@+id/picker_due_date"
+    android:id="@+id/date_picker_due_date"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:datePickerMode="spinner"
     android:calendarViewShown="false"
-    android:layout_below="@+id/etEditItem"
+    android:layout_below="@+id/edit_text_edit_task"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"/>
 </RelativeLayout>

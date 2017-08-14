@@ -2,6 +2,7 @@ package com.shusheng.codepath.simpletodo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditTaskDialogFragment.EditTaskDialogListener {
 
   ArrayList<Task> tasksList;
   TasksAdapter tasksAdapter;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
           public boolean onItemLongClick(AdapterView<?> adapter,
                                          View item, int pos, long id) {
 
-            Task selectedTask = (Task)tasksListView.getItemAtPosition(pos);
+            Task selectedTask = (Task) tasksListView.getItemAtPosition(pos);
             selectedTask.delete();
             tasksList.remove(pos);
             tasksAdapter.notifyDataSetChanged();
@@ -65,10 +66,7 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onItemClick(AdapterView<?> adapter,
                                   View item, int pos, long id) {
-            Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-            i.putExtra("task", Parcels.wrap((Task) tasksListView.getItemAtPosition(pos)));
-            i.putExtra("pos", pos);
-            startActivityForResult(i, REQUEST_CODE);
+            showEditDialog((Task) tasksListView.getItemAtPosition(pos), pos);
           }
         }
     );
@@ -97,12 +95,29 @@ public class MainActivity extends AppCompatActivity {
     // Handle item selection
     switch (item.getItemId()) {
       case R.id.miAddTask:
-        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-        i.putExtra("pos", tasksList.size());
-        startActivityForResult(i, REQUEST_CODE);
+        showEditDialog(new Task(), tasksList.size());
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  private void showEditDialog(Task task, int pos) {
+    FragmentManager fm = getSupportFragmentManager();
+    EditTaskDialogFragment editNameDialogFragment = EditTaskDialogFragment.newInstance(task, pos);
+    editNameDialogFragment.show(fm, "fragment_edit_task");
+  }
+
+  @Override
+  public void onFinishEditDialog(Task task, int pos) {
+    task.save();
+    if (pos == tasksList.size()) {
+      tasksList.add(task);
+    } else {
+      Task oldTask = tasksList.get(pos);
+      oldTask.setTitle(task.getTitle());
+      oldTask.setDueDate(task.getDueDate());
+    }
+    tasksAdapter.notifyDataSetChanged();
   }
 }
