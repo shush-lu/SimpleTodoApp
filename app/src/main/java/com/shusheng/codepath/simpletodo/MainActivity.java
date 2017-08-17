@@ -1,50 +1,67 @@
 package com.shusheng.codepath.simpletodo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.shusheng.codepath.simpletodo.adapter.TasksAdapter;
 import com.shusheng.codepath.simpletodo.data.Task;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements EditTaskDialogFragment.EditTaskDialogListener {
 
+  EditText etNewTask;
   ArrayList<Task> tasksList;
   TasksAdapter tasksAdapter;
   ListView tasksListView;
-
-  private final int REQUEST_CODE = 10;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    etNewTask = (EditText) findViewById(R.id.edit_text_new_task);
     tasksList = new ArrayList<>(SQLite.select().from(Task.class).queryList());
 
     tasksAdapter = new TasksAdapter(this, tasksList);
     tasksListView = (ListView) findViewById(R.id.tasks_list_view);
     tasksListView.setAdapter(tasksAdapter);
     setupListViewListener();
+    setupEditTextListener();
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_main, menu);
-    return true;
+  private void setupEditTextListener() {
+    etNewTask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+          Task newTask = new Task(etNewTask.getText().toString());
+          newTask.save();
+          tasksList.add(newTask);
+          tasksAdapter.notifyDataSetChanged();
+          etNewTask.setText("");
+        }
+        return false;
+      }
+    });
   }
+
+//  @Override
+//  public boolean onCreateOptionsMenu(Menu menu) {
+//    // Inflate the menu; this adds items to the action bar if it is present.
+//    getMenuInflater().inflate(R.menu.menu_main, menu);
+//    return true;
+//  }
 
   private void setupListViewListener() {
     tasksListView.setOnItemLongClickListener(
@@ -70,24 +87,6 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialogFra
           }
         }
     );
-  }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-      Task task = Parcels.unwrap(data.getParcelableExtra("task"));
-      int pos = data.getExtras().getInt("pos", 0);
-      if (pos == tasksList.size()) {
-        task.save();
-        tasksList.add(task);
-      } else {
-        task.save();
-        Task oldTask = tasksList.get(pos);
-        oldTask.setTitle(task.getTitle());
-        oldTask.setDueDate(task.getDueDate());
-      }
-      tasksAdapter.notifyDataSetChanged();
-    }
   }
 
   @Override
@@ -119,5 +118,12 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialogFra
       oldTask.setDueDate(task.getDueDate());
     }
     tasksAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void onBackPressed() {
+    tasksList = new ArrayList<>(SQLite.select().from(Task.class).queryList());
+    tasksAdapter.notifyDataSetChanged();
+    finish();
   }
 }

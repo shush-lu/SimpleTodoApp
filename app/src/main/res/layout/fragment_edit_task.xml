@@ -1,70 +1,95 @@
-<RelativeLayout
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:orientation="vertical"
   android:paddingBottom="16dp"
   android:paddingLeft="16dp"
   android:paddingRight="16dp"
-  android:paddingTop="16dp">
-
-
+  android:paddingTop="16dp"
+  android:weightSum="1">
 
   <EditText
     android:id="@+id/edit_text_edit_task"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ems="10"
+    android:inputType="text"/>
+
+
+  <TextView
+    android:id="@+id/text_view_due_date"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Due date"
+    android:padding="6dp"
+    android:textSize="20sp"
+    android:textColor="@color/colorAccent"/>
+
+  <EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top|left"
+    android:hint="Add a note..."
     android:inputType="textMultiLine"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true"
-    android:layout_alignLeft="@+id/date_picker_due_date"
-    android:layout_alignStart="@+id/date_picker_due_date"/>
+    android:lines="4"
+    android:padding="6dp"
+    android:textSize="20sp"/>
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+      android:id="@+id/textView"
+      android:layout_width="100dp"
+      android:layout_height="wrap_content"
+      android:text="Priority"
+      android:textSize="16dp"
+      android:padding="6dp"
+      android:textColor="@color/colorPrimaryText"/>
+
+    <Spinner
+      android:id="@+id/spinner"
+      android:layout_width="120dp"
+      android:layout_height="wrap_content"
+      android:entries="@array/priority_array"
+      android:padding="6dp"
+      android:prompt="@string/priority_prompt"
+      android:scrollbarSize="20dp"/>
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+      android:id="@+id/textView2"
+      android:layout_width="100dp"
+      android:layout_height="wrap_content"
+      android:text="Status"
+      android:textSize="16dp"
+      android:padding="6dp"
+      android:textColor="@color/colorPrimaryText"/>
+
+    <Spinner
+      android:id="@+id/spinner2"
+      android:layout_width="120dp"
+      android:layout_height="wrap_content"
+      android:entries="@array/status_array"
+      android:padding="6dp"
+      android:prompt="@string/status_prompt"
+
+      android:scrollbarSize="20dp"/>
+  </LinearLayout>
 
   <Button
     android:id="@+id/btn_save_task"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Save"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"/>
-
-  <DatePicker
-    android:id="@+id/date_picker_due_date"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:datePickerMode="spinner"
-    android:calendarViewShown="false"
-    android:layout_toRightOf="@+id/textView"
-    android:layout_toEndOf="@+id/textView"
-    android:layout_marginLeft="26dp"
-    android:layout_marginStart="26dp"
-    android:layout_below="@+id/edit_text_edit_task"/>
-
-  <TextView
-    android:id="@+id/textView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Task Name"
-    android:textColor="@color/colorPrimaryText"
-    android:textSize="20sp"
-    android:layout_alignBaseline="@+id/edit_text_edit_task"
-    android:layout_alignBottom="@+id/edit_text_edit_task"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"/>
-
-  <TextView
-    android:id="@+id/textView2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_below="@+id/edit_text_edit_task"
-    android:layout_marginTop="11dp"
-    android:text="Due Date"
-    android:textColor="@color/colorPrimaryText"
-    android:textSize="20sp"
-    android:layout_toLeftOf="@+id/date_picker_due_date"
-    android:layout_toStartOf="@+id/date_picker_due_date"/>
-</RelativeLayout>
+    android:padding="6dp"
+    android:text="Done"/>
+</LinearLayout>

@@ -23,6 +23,10 @@ public class Task extends BaseModel {
   public Task() {
   }
 
+  public Task(String title) {
+    setTitle(title);
+  }
+
   public Task(String title, String date) {
     setTitle(title);
     try {

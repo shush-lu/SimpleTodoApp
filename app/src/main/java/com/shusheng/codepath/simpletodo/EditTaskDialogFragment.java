@@ -3,32 +3,32 @@ package com.shusheng.codepath.simpletodo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.shusheng.codepath.simpletodo.data.Task;
 
 import org.parceler.Parcels;
 
 import java.text.ParseException;
-import java.util.Calendar;
 
-public class EditTaskDialogFragment extends DialogFragment {
+public class EditTaskDialogFragment extends DialogFragment implements SelectDateDialogFragment.SelectDateDialogListener {
 
   public interface EditTaskDialogListener {
     void onFinishEditDialog(Task task, int pos);
   }
 
   private EditText etTitle;
-  private DatePicker dpDueDate;
+  private TextView tvDueDate;
   private Task task;
   private int pos;
-  private Button btnSave;
+  private Button btnDone;
 
   public EditTaskDialogFragment() {
     // Empty constructor for DialogFragment
@@ -53,42 +53,43 @@ public class EditTaskDialogFragment extends DialogFragment {
     super.onViewCreated(view, savedInstanceState);
     // Get field from view
     etTitle = (EditText) view.findViewById(R.id.edit_text_edit_task);
-    dpDueDate = (DatePicker) view.findViewById(R.id.date_picker_due_date);
-    dpDueDate.setMinDate(System.currentTimeMillis());
-    // Fetch arguments from bundle and set title
+    tvDueDate = (TextView) view.findViewById(R.id.text_view_due_date);
+    btnDone = (Button) view.findViewById(R.id.btn_save_task);
+
+    // Fetch arguments from bundle
     task = Parcels.unwrap(getArguments().getParcelable("task"));
     pos = getArguments().getInt("pos");
-    btnSave = (Button) view.findViewById(R.id.btn_save_task);
-    btnSave.setOnClickListener(new View.OnClickListener() {
+
+    tvDueDate.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        showEditDialog();
+      }
+    });
+
+    btnDone.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         EditTaskDialogListener listener = (EditTaskDialogListener) getActivity();
         task.setTitle(etTitle.getText().toString());
-        try {
-          task.setDateFromString(String.format("%d %d %d", dpDueDate.getMonth() + 1, dpDueDate.getDayOfMonth(), dpDueDate.getYear()));
-        } catch (ParseException e) {
-          e.printStackTrace();
-        }
         listener.onFinishEditDialog(task, pos);
         dismiss();
       }
     });
 
-    if (task.getTitle() != null || task.getDueDate() != null) {
+    if (task.getTitle() != null) {
       etTitle.setText(task.getTitle());
       etTitle.setSelection(etTitle.getText().length());
-
-      Calendar c = Calendar.getInstance();
-      c.setTime(task.getDueDate());
-      int year = c.get(Calendar.YEAR);
-      int month = c.get(Calendar.MONTH);
-      int day = c.get(Calendar.DAY_OF_MONTH);
-      dpDueDate.updateDate(year, month, day);
     }
+
+    if (task.getDueDate() != null) {
+      tvDueDate.setText(String.format("Due %s", task.getDataInString()));
+    }
+
     // Show soft keyboard automatically and request focus to field
     etTitle.requestFocus();
-    getDialog().getWindow().setSoftInputMode(
-        WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
   }
 
   @Override
@@ -101,6 +102,25 @@ public class EditTaskDialogFragment extends DialogFragment {
     getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     // Call super onResume after sizing
     super.onResume();
+  }
+
+  private void showEditDialog() {
+    FragmentManager fm = getFragmentManager();
+    SelectDateDialogFragment selectDateDialogFragment = SelectDateDialogFragment.newInstance(task.getDueDate());
+    selectDateDialogFragment.setTargetFragment(EditTaskDialogFragment.this, 300);
+    selectDateDialogFragment.show(fm, "fragment_selete_date");
+  }
+
+
+  @Override
+  public void onFinishEditDialog(String inputText) {
+    try {
+      task.setDateFromString(inputText);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    tvDueDate.setText(String.format("Due %s", task.getDataInString()));
+    task.save();
   }
 
 }
