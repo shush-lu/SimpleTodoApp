@@ -13,8 +13,12 @@ import com.shusheng.codepath.simpletodo.R;
 import com.shusheng.codepath.simpletodo.data.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TasksAdapter extends ArrayAdapter<Task> {
+
+  HashMap<Integer, String> priorityMap;
+
   public TasksAdapter(Context context, ArrayList<Task> tasks) {
     super(context, 0, tasks);
   }
@@ -29,10 +33,19 @@ public class TasksAdapter extends ArrayAdapter<Task> {
     }
     TextView tvTaskTitle = (TextView) convertView.findViewById(R.id.text_view_task_title);
     TextView tvDueDate = (TextView) convertView.findViewById(R.id.text_view_due_date);
+    TextView tvPriority = (TextView) convertView.findViewById(R.id.text_view_priority);
+
     tvTaskTitle.setText(task.getTitle());
     if (task.getDueDate() != null) {
       tvDueDate.setText(task.getDataInString());
     }
+    priorityMap = new HashMap<>();
+    priorityMap.put(0,"High");
+    priorityMap.put(1,"Medium");
+    priorityMap.put(2,"Low");
+
+    tvPriority.setText(priorityMap.get(task.getPriority()));
+
     return convertView;
   }
 }

@@ -1,5 +1,6 @@
 package com.shusheng.codepath.simpletodo;
 
+
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,60 +13,49 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.EditText;
 
-import java.util.Calendar;
-import java.util.Date;
+public class EditNoteDialogFragment extends DialogFragment {
 
-public class SelectDateDialogFragment extends DialogFragment {
+  private EditText etNote;
+  private Button btnSaveNote;
 
-  private DatePicker dpDueDate;
-  private Button btnSeleteDate;
-
-  private Date dueDate;
-
-  public interface SelectDateDialogListener {
-    void onFinishSelectDateDialog(String inputText);
+  public interface EditNoteDialogListener {
+    void onFinishEditNoteDialog(String inputText);
   }
 
-
-  public SelectDateDialogFragment() {
+  public EditNoteDialogFragment() {
+    // Required empty public constructor
   }
 
-  public static SelectDateDialogFragment newInstance(Date dueDate) {
-    SelectDateDialogFragment frag = new SelectDateDialogFragment();
+  public static EditNoteDialogFragment newInstance(String note) {
+    EditNoteDialogFragment frag = new EditNoteDialogFragment();
     Bundle args = new Bundle();
-    if (dueDate == null) {
-      args.putLong("dueDate", System.currentTimeMillis());
-    } else {
-      args.putLong("dueDate", dueDate.getTime());
-    }
+    args.putString("note", note);
     frag.setArguments(args);
     return frag;
   }
 
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_selete_date, container);
+    // Inflate the layout for this fragment
+    return inflater.inflate(R.layout.fragment_edit_note, container, false);
   }
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    dpDueDate = (DatePicker) view.findViewById(R.id.date_picker_due_date);
-    btnSeleteDate = (Button) view.findViewById(R.id.btn_save_date);
+    etNote = (EditText) view.findViewById(R.id.edit_text_edit_note);
+    btnSaveNote = (Button) view.findViewById(R.id.btn_save_note);
 
-    dueDate = new Date(getArguments().getLong("dueDate"));
-    Calendar c = Calendar.getInstance();
-    c.setTime(dueDate);
-    int year = c.get(Calendar.YEAR);
-    int month = c.get(Calendar.MONTH);
-    int day = c.get(Calendar.DAY_OF_MONTH);
-    dpDueDate.updateDate(year, month, day);
+    String note = getArguments().getString("note");
+    etNote.setText(note);
+    etNote.setSelection(etNote.getText().length());
 
-    btnSeleteDate.setOnClickListener(new View.OnClickListener() {
+    btnSaveNote.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         sendBackResult();
@@ -73,12 +63,11 @@ public class SelectDateDialogFragment extends DialogFragment {
     });
   }
 
-  public void sendBackResult() {
-    SelectDateDialogListener listener = (SelectDateDialogListener) getTargetFragment();
-    listener.onFinishSelectDateDialog(String.format("%d %d %d", dpDueDate.getMonth() + 1, dpDueDate.getDayOfMonth(), dpDueDate.getYear()));
+  private void sendBackResult() {
+    EditNoteDialogListener listener = (EditNoteDialogListener) getTargetFragment();
+    listener.onFinishEditNoteDialog(etNote.getText().toString());
     dismiss();
   }
-
 
   public void onResume() {
     // Store access variables for window and blank point
@@ -93,4 +82,5 @@ public class SelectDateDialogFragment extends DialogFragment {
     // Call super onResume after sizing
     super.onResume();
   }
+
 }

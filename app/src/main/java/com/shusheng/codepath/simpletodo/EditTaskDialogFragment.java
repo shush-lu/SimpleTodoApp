@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.shusheng.codepath.simpletodo.data.Task;
@@ -18,17 +19,23 @@ import org.parceler.Parcels;
 
 import java.text.ParseException;
 
-public class EditTaskDialogFragment extends DialogFragment implements SelectDateDialogFragment.SelectDateDialogListener {
+public class EditTaskDialogFragment extends DialogFragment
+    implements SelectDateDialogFragment.SelectDateDialogListener,
+    EditNoteDialogFragment.EditNoteDialogListener {
 
   public interface EditTaskDialogListener {
     void onFinishEditDialog(Task task, int pos);
   }
 
+  private Task task;
+
   private EditText etTitle;
   private TextView tvDueDate;
-  private Task task;
+  private TextView tvNote;
   private int pos;
   private Button btnDone;
+  private Spinner spinPriority;
+  private Spinner spinStatus;
 
   public EditTaskDialogFragment() {
     // Empty constructor for DialogFragment
@@ -54,7 +61,10 @@ public class EditTaskDialogFragment extends DialogFragment implements SelectDate
     // Get field from view
     etTitle = (EditText) view.findViewById(R.id.edit_text_edit_task);
     tvDueDate = (TextView) view.findViewById(R.id.text_view_due_date);
+    tvNote = (TextView) view.findViewById(R.id.text_view_edit_note);
     btnDone = (Button) view.findViewById(R.id.btn_save_task);
+    spinPriority = (Spinner) view.findViewById(R.id.spinner_priority);
+    spinStatus = (Spinner) view.findViewById(R.id.spinner_status);
 
     // Fetch arguments from bundle
     task = Parcels.unwrap(getArguments().getParcelable("task"));
@@ -63,15 +73,27 @@ public class EditTaskDialogFragment extends DialogFragment implements SelectDate
     tvDueDate.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        showEditDialog();
+        showSelectDateDialog();
       }
     });
+
+    tvNote.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        showEditNoteDialog();
+      }
+    });
+
+    spinPriority.setSelection(task.getPriority());
+    spinStatus.setSelection(task.getStatus());
 
     btnDone.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         EditTaskDialogListener listener = (EditTaskDialogListener) getActivity();
         task.setTitle(etTitle.getText().toString());
+        task.setPriority(spinPriority.getSelectedItemPosition());
+        task.setStatus(spinStatus.getSelectedItemPosition());
         listener.onFinishEditDialog(task, pos);
         dismiss();
       }
@@ -84,6 +106,10 @@ public class EditTaskDialogFragment extends DialogFragment implements SelectDate
 
     if (task.getDueDate() != null) {
       tvDueDate.setText(String.format("Due %s", task.getDataInString()));
+    }
+
+    if (task.getNote() != null) {
+      tvNote.setText(task.getNote());
     }
 
     // Show soft keyboard automatically and request focus to field
@@ -104,7 +130,7 @@ public class EditTaskDialogFragment extends DialogFragment implements SelectDate
     super.onResume();
   }
 
-  private void showEditDialog() {
+  private void showSelectDateDialog() {
     FragmentManager fm = getFragmentManager();
     SelectDateDialogFragment selectDateDialogFragment = SelectDateDialogFragment.newInstance(task.getDueDate());
     selectDateDialogFragment.setTargetFragment(EditTaskDialogFragment.this, 300);
@@ -113,7 +139,7 @@ public class EditTaskDialogFragment extends DialogFragment implements SelectDate
 
 
   @Override
-  public void onFinishEditDialog(String inputText) {
+  public void onFinishSelectDateDialog(String inputText) {
     try {
       task.setDateFromString(inputText);
     } catch (ParseException e) {
@@ -123,4 +149,17 @@ public class EditTaskDialogFragment extends DialogFragment implements SelectDate
     task.save();
   }
 
+  private void showEditNoteDialog() {
+    FragmentManager fm = getFragmentManager();
+    EditNoteDialogFragment editNoteFragment = EditNoteDialogFragment.newInstance(task.getNote());
+    editNoteFragment.setTargetFragment(EditTaskDialogFragment.this, 300);
+    editNoteFragment.show(fm, "fragment_edit_note");
+  }
+
+  @Override
+  public void onFinishEditNoteDialog(String inputText) {
+    task.setNote(inputText);
+    tvNote.setText(inputText);
+    task.save();
+  }
 }

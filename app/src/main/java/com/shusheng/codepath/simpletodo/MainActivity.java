@@ -17,6 +17,7 @@ import com.shusheng.codepath.simpletodo.adapter.TasksAdapter;
 import com.shusheng.codepath.simpletodo.data.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements EditTaskDialogFragment.EditTaskDialogListener {
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialogFra
   ArrayList<Task> tasksList;
   TasksAdapter tasksAdapter;
   ListView tasksListView;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
