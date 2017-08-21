@@ -38,6 +38,8 @@ public class TasksAdapter extends ArrayAdapter<Task> {
     tvTaskTitle.setText(task.getTitle());
     if (task.getDueDate() != null) {
       tvDueDate.setText(task.getDataInString());
+    } else {
+      tvDueDate.setText("");
     }
     priorityMap = new HashMap<>();
     priorityMap.put(0,"High");

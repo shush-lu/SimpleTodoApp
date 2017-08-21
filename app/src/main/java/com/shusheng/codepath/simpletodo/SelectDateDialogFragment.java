@@ -47,7 +47,7 @@ public class SelectDateDialogFragment extends DialogFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_selete_date, container);
+    return inflater.inflate(R.layout.fragment_select_date, container);
   }
 
   @Override

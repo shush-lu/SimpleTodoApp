@@ -134,7 +134,7 @@ public class EditTaskDialogFragment extends DialogFragment
     FragmentManager fm = getFragmentManager();
     SelectDateDialogFragment selectDateDialogFragment = SelectDateDialogFragment.newInstance(task.getDueDate());
     selectDateDialogFragment.setTargetFragment(EditTaskDialogFragment.this, 300);
-    selectDateDialogFragment.show(fm, "fragment_selete_date");
+    selectDateDialogFragment.show(fm, "fragment_select_date");
   }
 
 
