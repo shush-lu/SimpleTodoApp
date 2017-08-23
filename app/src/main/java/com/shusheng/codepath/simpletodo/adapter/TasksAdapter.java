@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.shusheng.codepath.simpletodo.R;
@@ -20,23 +21,31 @@ import java.util.HashMap;
 public class TasksAdapter extends ArrayAdapter<Task> {
 
   HashMap<Integer, String> priorityMap;
+  CheckBox cbStatus;
+  TextView tvPriority;
+  TextView tvTaskTitle;
+  TextView tvDueDate;
+  Task task;
 
   public TasksAdapter(Context context, ArrayList<Task> tasks) {
     super(context, 0, tasks);
   }
 
+  public interface ChangeStatusDialogListener {
+    void onFinishChangeSttDialog(Task task, int pos);
+  }
 
   @NonNull
   @Override
   public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-    Task task = getItem(position);
+    task = getItem(position);
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_task, parent, false);
     }
-    TextView tvTaskTitle = (TextView) convertView.findViewById(R.id.text_view_task_title);
-    TextView tvDueDate = (TextView) convertView.findViewById(R.id.text_view_due_date);
-    TextView tvPriority = (TextView) convertView.findViewById(R.id.text_view_priority);
-//    CheckBox cbStatus = (CheckBox) convertView.findViewById(R.id.checkbox_status);
+    tvTaskTitle = (TextView) convertView.findViewById(R.id.text_view_task_title);
+    tvDueDate = (TextView) convertView.findViewById(R.id.text_view_due_date);
+    tvPriority = (TextView) convertView.findViewById(R.id.text_view_priority);
+    cbStatus = (CheckBox) convertView.findViewById(R.id.check_box_status);
 
     tvTaskTitle.setText(task.getTitle());
 
@@ -68,8 +77,17 @@ public class TasksAdapter extends ArrayAdapter<Task> {
     } else {
       tvPriority.setTextColor(Color.rgb(109, 192, 102));
     }
-//    cbStatus.setChecked(task.getStatus() == 0 ? false : true);
-
+    cbStatus.setChecked(task.getStatus() != 0);
+    cbStatus.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(cbStatus.isEnabled()) {
+          task.setStatus(1);
+        } else {
+          task.setStatus(0);
+        }
+      }
+    });
     return convertView;
   }
 

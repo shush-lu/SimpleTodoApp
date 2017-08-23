@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements EditTaskDialogFragment.EditTaskDialogListener,
-    DeleteTaskDialogFragment.DeleteTaskDialogListener {
+    DeleteTaskDialogFragment.DeleteTaskDialogListener, TasksAdapter.ChangeStatusDialogListener {
 
   EditText etNewTask;
   ArrayList<Task> tasksList;
@@ -141,7 +141,12 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialogFra
 
   }
 
-  class TaskComparator implements Comparator<Task> {
+    @Override
+    public void onFinishChangeStatusDialog(Task task) {
+        task.save();
+    }
+
+    class TaskComparator implements Comparator<Task> {
     @Override
     public int compare(Task o1, Task o2) {
       int statusComp = o1.getStatus() - o2.getStatus();
