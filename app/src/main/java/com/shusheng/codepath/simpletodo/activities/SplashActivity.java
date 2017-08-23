@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo;
+package com.shusheng.codepath.simpletodo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

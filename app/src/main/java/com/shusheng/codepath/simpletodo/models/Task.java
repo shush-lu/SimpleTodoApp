@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo.data;
+package com.shusheng.codepath.simpletodo.models;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;

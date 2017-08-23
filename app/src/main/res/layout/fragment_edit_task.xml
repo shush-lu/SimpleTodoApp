@@ -32,7 +32,8 @@
     android:inputType="textMultiLine"
     android:lines="4"
     android:padding="6dp"
-    android:textSize="20sp"/>
+    android:textSize="20sp"
+    android:textColor="#000000"/>
 
   <LinearLayout
     android:layout_width="wrap_content"
@@ -100,7 +101,6 @@
     android:text="Done"
     android:textAllCaps="false"
     android:textColor="@color/colorAccent"
-    android:textSize="20dp"
-    />
+    android:textSize="20dp"/>
 
 </LinearLayout>

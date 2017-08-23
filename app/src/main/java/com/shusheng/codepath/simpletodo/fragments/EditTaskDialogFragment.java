@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo;
+package com.shusheng.codepath.simpletodo.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +13,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.shusheng.codepath.simpletodo.data.Task;
+import com.shusheng.codepath.simpletodo.R;
+import com.shusheng.codepath.simpletodo.models.Task;
 
 import org.parceler.Parcels;
 

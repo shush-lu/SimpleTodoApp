@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo;
+package com.shusheng.codepath.simpletodo.fragments;
 
 import android.graphics.Point;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+
+import com.shusheng.codepath.simpletodo.R;
 
 import java.util.Calendar;
 import java.util.Date;

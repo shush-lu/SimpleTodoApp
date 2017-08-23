@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:padding="20dp"
-              tools:context=".EditNoteDialogFragment">
+              tools:context=".fragments.EditNoteDialogFragment">
 
   <EditText
     android:id="@+id/edit_text_edit_note"
@@ -22,5 +22,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="right"
-    android:text="Save"/>
+    android:text="Save"
+    android:background="@android:color/transparent"
+    android:textAllCaps="false"
+    android:textColor="@color/colorAccent"
+    android:textSize="20dp"/>
 </LinearLayout>

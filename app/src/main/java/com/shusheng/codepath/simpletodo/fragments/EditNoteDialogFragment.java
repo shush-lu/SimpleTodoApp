@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo;
+package com.shusheng.codepath.simpletodo.fragments;
 
 
 import android.graphics.Point;
@@ -14,6 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.shusheng.codepath.simpletodo.R;
 
 public class EditNoteDialogFragment extends DialogFragment {
 
