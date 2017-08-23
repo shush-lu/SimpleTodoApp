@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.shusheng.codepath.simpletodo.R;
-import com.shusheng.codepath.simpletodo.data.Task;
+import com.shusheng.codepath.simpletodo.models.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;

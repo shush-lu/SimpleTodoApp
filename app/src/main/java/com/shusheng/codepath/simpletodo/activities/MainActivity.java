@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo;
+package com.shusheng.codepath.simpletodo.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,8 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.shusheng.codepath.simpletodo.fragments.DeleteTaskDialogFragment;
+import com.shusheng.codepath.simpletodo.fragments.EditTaskDialogFragment;
+import com.shusheng.codepath.simpletodo.R;
 import com.shusheng.codepath.simpletodo.adapter.TasksAdapter;
-import com.shusheng.codepath.simpletodo.data.Task;
+import com.shusheng.codepath.simpletodo.models.Task;
 
 import java.util.ArrayList;
 import java.util.Collections;

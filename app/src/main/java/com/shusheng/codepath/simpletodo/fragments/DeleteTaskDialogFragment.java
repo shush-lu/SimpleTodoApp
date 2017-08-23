@@ -1,4 +1,4 @@
-package com.shusheng.codepath.simpletodo;
+package com.shusheng.codepath.simpletodo.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.Button;
 
-import com.shusheng.codepath.simpletodo.data.Task;
+import com.shusheng.codepath.simpletodo.models.Task;
 
 import org.parceler.Parcels;
 
@@ -72,7 +72,7 @@ public class DeleteTaskDialogFragment extends DialogFragment {
     super.onStart();
     Button posBtn = ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE);
     Button negBtn = ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE);
-    posBtn.setTextColor(Color.RED);
+    posBtn.setTextColor(Color.rgb(128, 0, 0));
     posBtn.setAllCaps(false);
     negBtn.setAllCaps(false);
 
