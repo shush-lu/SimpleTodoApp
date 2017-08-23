@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Simple Todo</string>
+  <string name="app_name">Magic Todo</string>
 
   <string name="priority_prompt">Priority</string>
   <string name="status_prompt">Status</string>
