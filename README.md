@@ -1,10 +1,10 @@
 # Pre-work - *Simple Todo Android App*
 
-**Name of your app** is an android app that allows building a todo list and basic todo items management functionality including adding new items, editing and deleting an existing item.
+**Magic Todo** is an android app that allows building a todo list and basic todo items management functionality including adding new items, editing and deleting an existing item.
 
 Submitted by: **Shusheng Lu**
 
-Time spent: **3** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -25,13 +25,15 @@ The following **optional** features are to be implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [X] Add a splash screen when the app is starting
+* [X] Sort tasks based on completion status and priority. Cross the DONE tasks and move them to the end
+
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/qgG9I1M.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/1VCyWvO.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
