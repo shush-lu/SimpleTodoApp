@@ -21,6 +21,10 @@ public class TasksAdapter extends ArrayAdapter<Task> {
 
   HashMap<Integer, String> priorityMap;
 
+  TextView tvTaskTitle;
+  TextView tvDueDate;
+  TextView tvPriority;
+
   public TasksAdapter(Context context, ArrayList<Task> tasks) {
     super(context, 0, tasks);
   }
@@ -33,26 +37,24 @@ public class TasksAdapter extends ArrayAdapter<Task> {
     if (convertView == null) {
       convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_task, parent, false);
     }
-    TextView tvTaskTitle = (TextView) convertView.findViewById(R.id.text_view_task_title);
-    TextView tvDueDate = (TextView) convertView.findViewById(R.id.text_view_due_date);
-    TextView tvPriority = (TextView) convertView.findViewById(R.id.text_view_priority);
+    tvTaskTitle = (TextView) convertView.findViewById(R.id.text_view_task_title);
+    tvDueDate = (TextView) convertView.findViewById(R.id.text_view_due_date);
+    tvPriority = (TextView) convertView.findViewById(R.id.text_view_priority);
 //    CheckBox cbStatus = (CheckBox) convertView.findViewById(R.id.checkbox_status);
 
     tvTaskTitle.setText(task.getTitle());
 
-    if (task.getStatus() == 1) {
-      tvTaskTitle.setTextColor(Color.GRAY);
-      tvTaskTitle.setPaintFlags(tvTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-    } else {
-      tvTaskTitle.setTextColor(Color.BLACK);
-      tvTaskTitle.setPaintFlags(tvTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-    }
+    setStatus(task);
 
-    if (task.getDueDate() != null) {
-      tvDueDate.setText(task.getDataInString());
-    } else {
-      tvDueDate.setText("");
-    }
+    setDueDate(task);
+
+    setPriority(task);
+//    cbStatus.setChecked(task.getStatus() == 0 ? false : true);
+
+    return convertView;
+  }
+
+  private void setPriority(Task task) {
     priorityMap = new HashMap<>();
     priorityMap.put(0, "High");
     priorityMap.put(1, "Medium");
@@ -68,9 +70,24 @@ public class TasksAdapter extends ArrayAdapter<Task> {
     } else {
       tvPriority.setTextColor(Color.rgb(109, 192, 102));
     }
-//    cbStatus.setChecked(task.getStatus() == 0 ? false : true);
+  }
 
-    return convertView;
+  private void setDueDate(Task task) {
+    if (task.getDueDate() != null) {
+      tvDueDate.setText(task.getDataInString());
+    } else {
+      tvDueDate.setText("");
+    }
+  }
+
+  private void setStatus(Task task) {
+    if (task.getStatus() == 1) {
+      tvTaskTitle.setTextColor(Color.GRAY);
+      tvTaskTitle.setPaintFlags(tvTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+    } else {
+      tvTaskTitle.setTextColor(Color.BLACK);
+      tvTaskTitle.setPaintFlags(tvTaskTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+    }
   }
 
 }

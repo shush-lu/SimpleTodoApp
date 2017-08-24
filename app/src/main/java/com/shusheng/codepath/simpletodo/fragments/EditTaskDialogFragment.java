@@ -85,21 +85,17 @@ public class EditTaskDialogFragment extends DialogFragment
       }
     });
 
-    spinPriority.setSelection(task.getPriority());
-    spinStatus.setSelection(task.getStatus());
+    setBtnDoneListener();
 
-    btnDone.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        EditTaskDialogListener listener = (EditTaskDialogListener) getActivity();
-        task.setTitle(etTitle.getText().toString());
-        task.setPriority(spinPriority.getSelectedItemPosition());
-        task.setStatus(spinStatus.getSelectedItemPosition());
-        listener.onFinishEditDialog(task, pos);
-        dismiss();
-      }
-    });
+    setupTaskWithCurrentData();
 
+    // Show soft keyboard automatically and request focus to field
+    etTitle.requestFocus();
+    getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+  }
+
+  private void setupTaskWithCurrentData() {
     if (task.getTitle() != null) {
       etTitle.setText(task.getTitle());
       etTitle.setSelection(etTitle.getText().length());
@@ -113,10 +109,22 @@ public class EditTaskDialogFragment extends DialogFragment
       tvNote.setText(task.getNote());
     }
 
-    // Show soft keyboard automatically and request focus to field
-    etTitle.requestFocus();
-    getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    spinPriority.setSelection(task.getPriority());
+    spinStatus.setSelection(task.getStatus());
+  }
 
+  private void setBtnDoneListener() {
+    btnDone.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        EditTaskDialogListener listener = (EditTaskDialogListener) getActivity();
+        task.setTitle(etTitle.getText().toString());
+        task.setPriority(spinPriority.getSelectedItemPosition());
+        task.setStatus(spinStatus.getSelectedItemPosition());
+        listener.onFinishEditDialog(task, pos);
+        dismiss();
+      }
+    });
   }
 
   @Override

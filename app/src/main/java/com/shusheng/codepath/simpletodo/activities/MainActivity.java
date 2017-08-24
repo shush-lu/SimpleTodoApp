@@ -15,10 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.shusheng.codepath.simpletodo.fragments.DeleteTaskDialogFragment;
-import com.shusheng.codepath.simpletodo.fragments.EditTaskDialogFragment;
 import com.shusheng.codepath.simpletodo.R;
 import com.shusheng.codepath.simpletodo.adapter.TasksAdapter;
+import com.shusheng.codepath.simpletodo.fragments.DeleteTaskDialogFragment;
+import com.shusheng.codepath.simpletodo.fragments.EditTaskDialogFragment;
 import com.shusheng.codepath.simpletodo.models.Task;
 
 import java.util.ArrayList;
@@ -48,8 +48,13 @@ public class MainActivity extends AppCompatActivity implements EditTaskDialogFra
     tasksAdapter = new TasksAdapter(this, tasksList);
     tasksListView = (ListView) findViewById(R.id.tasks_list_view);
     tasksListView.setAdapter(tasksAdapter);
+
     setupListViewListener();
     setupEditTextListener();
+    setupImgBtnListener();
+  }
+
+  private void setupImgBtnListener() {
     imgBtnAddTodo.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

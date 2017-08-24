@@ -59,13 +59,7 @@ public class SelectDateDialogFragment extends DialogFragment {
     dpDueDate = (DatePicker) view.findViewById(R.id.date_picker_due_date);
     btnSeleteDate = (Button) view.findViewById(R.id.btn_save_date);
 
-    dueDate = new Date(getArguments().getLong("dueDate"));
-    Calendar c = Calendar.getInstance();
-    c.setTime(dueDate);
-    int year = c.get(Calendar.YEAR);
-    int month = c.get(Calendar.MONTH);
-    int day = c.get(Calendar.DAY_OF_MONTH);
-    dpDueDate.updateDate(year, month, day);
+    setCurrentDueDate();
 
     btnSeleteDate.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -73,6 +67,16 @@ public class SelectDateDialogFragment extends DialogFragment {
         sendBackResult();
       }
     });
+  }
+
+  private void setCurrentDueDate() {
+    dueDate = new Date(getArguments().getLong("dueDate"));
+    Calendar c = Calendar.getInstance();
+    c.setTime(dueDate);
+    int year = c.get(Calendar.YEAR);
+    int month = c.get(Calendar.MONTH);
+    int day = c.get(Calendar.DAY_OF_MONTH);
+    dpDueDate.updateDate(year, month, day);
   }
 
   public void sendBackResult() {
