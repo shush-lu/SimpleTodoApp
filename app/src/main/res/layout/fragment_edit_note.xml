@@ -15,7 +15,8 @@
     android:inputType="textMultiLine"
     android:lines="6"
     android:padding="6dp"
-    android:textSize="20sp"/>
+    android:textSize="20sp"
+    android:background="#99FFFFFF"/>
 
   <Button
     android:id="@+id/btn_save_note"
